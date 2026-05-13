@@ -216,6 +216,7 @@ public class Server {
         @Override
         public void run() {
             try {
+                sendMessage("numPlayers " + NUM_PLAYERS);
                 String message;
                 while ((message = in.readLine()) != null) {
                     System.out.println("Received: " + message);

@@ -37,7 +37,7 @@ public class Console {
     /**
      * Minimum number of players required to start the game
      */
-    private static final int NUM_PLAYERS = Server.getNumPlayers();
+    private int numPlayers = 4;
 
     /**
      * The Port number at which the server runs.
@@ -174,7 +174,7 @@ public class Console {
         Label counterPrefix = new Label("Players:");
         counterPrefix.setTextFill(Color.LIGHTGRAY);
 
-        countLabel = new Label(totalCount + " / " + NUM_PLAYERS);
+        countLabel = new Label(totalCount + " / " + numPlayers);
         countLabel.setTextFill(Color.WHITE);
         countLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
@@ -193,7 +193,7 @@ public class Console {
         nameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 14));
 
         nameField = new TextField();
-        nameField.setPromptText("3 Characters Only");
+        nameField.setPromptText(NAME_LENGTH + " characters only.");
         nameField.setPrefHeight(40);
         nameField.setMaxWidth(300);
         nameField.setStyle("-fx-background-color: rgba(255,255,255,0.9); -fx-background-radius: 5; -fx-font-size: 14px;");
@@ -392,6 +392,7 @@ public class Console {
                         case "startGame" -> handleStartGame();
                         case "sendingPlayer" -> handlePlayerData(parts);
                         case "showPlayerJoined" -> showPlayerJoined(parts);
+                        case "numPlayers" -> handleNumPlayers(parts);
                     }
                 }
             } catch (IOException e) {
@@ -419,7 +420,7 @@ public class Console {
             if (parts.length >= 2) {
                 totalCount = Integer.parseInt(parts[1]);
 
-                Platform.runLater(() -> countLabel.setText(totalCount + " / " + NUM_PLAYERS));
+                Platform.runLater(() -> countLabel.setText(totalCount + " / " + numPlayers));
             }
         } catch (Exception e) {
             System.err.println("Error parsing update count message: " + e.getMessage());
@@ -484,5 +485,16 @@ public class Console {
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), e -> newPlayerLabel.setVisible(false)));
             timeline.play();
         });
+    }
+
+    private void handleNumPlayers(String[] parts) {
+        if (parts.length >= 2) {
+            try {
+                numPlayers = Integer.parseInt(parts[1]);
+                Platform.runLater(() -> countLabel.setText(totalCount + " / " + numPlayers));
+            } catch (NumberFormatException e) {
+                System.err.println("Error parsing numPlayers: " + e.getMessage());
+            }
+        }
     }
 }
