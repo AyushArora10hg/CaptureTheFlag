@@ -112,7 +112,8 @@ public class Menu extends Application {
     private void showNewGameDialog(Stage stage) {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Create New Game");
-        dialogStage.getIcons().add(new Image(Objects.requireNonNull(Menu.class.getResourceAsStream("/sfu/cmpt371/group7/game/gameIcon.png"))));
+        dialogStage.getIcons().add(new Image(Objects.requireNonNull(
+                Menu.class.getResourceAsStream("/sfu/cmpt371/group7/game/gameIcon.png"))));
 
         VBox dialogVBox = new VBox(15);
         dialogVBox.setPadding(new Insets(30));
@@ -126,14 +127,36 @@ public class Menu extends Application {
 
         Label ipLabel = new Label("Your IP: " + address);
         ipLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
+
+        // --- Player count selector ---
+        Label playerCountLabel = new Label("Number of Players:");
+        playerCountLabel.setStyle("-fx-font-size: 14px;");
+
+        ToggleGroup toggleGroup = new ToggleGroup();
+        HBox toggleBox = new HBox(10);
+        toggleBox.setAlignment(Pos.CENTER);
+
+        for (int i = 1; i <= 4; i++) {
+            ToggleButton btn = new ToggleButton(String.valueOf(i));
+            btn.setToggleGroup(toggleGroup);
+            btn.setPrefWidth(50);
+            btn.setUserData(i);
+            btn.setStyle("-fx-font-size: 14px;");
+            if (i == 4) btn.setSelected(true); // default to 4
+            toggleBox.getChildren().add(btn);
+        }
+        // --- End selector ---
+
         Button startButton = new Button("Start Game");
         styleButton(startButton, "#27ae60", "#1e8449");
 
         String ip = address;
         startButton.setOnAction(e -> {
+            Toggle selected = toggleGroup.getSelectedToggle();
+            int numPlayers = selected != null ? (int) selected.getUserData() : 4;
 
-            Thread serverThread = new Thread(() -> new Server().start());
-            serverThread.setDaemon(true); // ensures it closes when the app exits
+            Thread serverThread = new Thread(() -> new Server(numPlayers).start());
+            serverThread.setDaemon(true);
             serverThread.start();
 
             try {
@@ -145,9 +168,9 @@ public class Menu extends Application {
             }
         });
 
-        dialogVBox.getChildren().addAll(ipLabel, startButton);
+        dialogVBox.getChildren().addAll(ipLabel, playerCountLabel, toggleBox, startButton);
 
-        Scene dialogScene = new Scene(dialogVBox, 350, 250);
+        Scene dialogScene = new Scene(dialogVBox, 350, 280);
         dialogStage.setScene(dialogScene);
         dialogStage.setResizable(false);
         dialogStage.centerOnScreen();
@@ -202,6 +225,8 @@ public class Menu extends Application {
         joinStage.centerOnScreen();
         joinStage.show();
     }
+
+
 
     /**
      * Styles button with specified background and hover colors.

@@ -22,7 +22,7 @@ import static java.lang.System.exit;
  * Communication is done over sockets using the TCP protocol.
  */
 public class Server {
-    private static final int NUM_PLAYERS = 4;
+    private static int NUM_PLAYERS = 4; // Default 4
     private static final int PORT = 65000;
     private final List<ClientHandler> clients = new ArrayList<>();
     private int clientCount = 0;
@@ -48,6 +48,15 @@ public class Server {
 
     public Server() {
         System.out.println("Server starting on port " + PORT);
+    }
+
+    public Server(int numPlayers) {
+        NUM_PLAYERS = numPlayers;
+        System.out.println("Server starting on port " + PORT + " for " + NUM_PLAYERS + " players");
+    }
+
+    public static int getNumPlayers() {
+        return NUM_PLAYERS;
     }
 
     /**

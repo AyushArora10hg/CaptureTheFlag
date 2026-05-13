@@ -15,6 +15,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import sfu.cmpt371.group7.game.model.Player;
+import sfu.cmpt371.group7.game.server.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class Console {
     /**
      * Minimum number of players required to start the game
      */
-    private static final int NUM_PLAYERS = 4;
+    private static final int NUM_PLAYERS = Server.getNumPlayers();
 
     /**
      * The Port number at which the server runs.
