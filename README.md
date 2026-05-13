@@ -21,39 +21,54 @@ A real-time multiplayer Capture the Flag game implemented in Java with JavaFX. P
 - JavaFX (included in the Maven dependencies)
 
 
-## Building the Project
+## Running the Game
+
+There are two ways to run the game:
+
+### Option A: Using the Pre-built JAR (Quickest)
+
+A pre-built `Game.jar` is available directly in the repository — no build step required.
+
+**Requirement**: Java 22 or higher
+
+Download `Game.jar` from the repository, open a terminal in the same directory, and run:
+
+```bash
+java -jar Game.jar
+```
+
+### Option B: Build from Source
+
+#### Building the Project
 
 To build the project, use the following Maven command:
-``` bash
+
+```bash
 mvn clean package
 ```
 
-This will test and compile the project and ensure that all required dependencies are downloaded. Then, this will generate a jar file in the target/ directory, which can be used to distribute or run the game.
-
+This will test and compile the project and ensure that all required dependencies are downloaded. Then, this will generate a jar file in the `target/` directory, which can be used to distribute or run the game.
 
 You can also use the following Maven command:
 
-``` bash
+```bash
 mvn clean install
 ```
 
 This will do the same as the previous command, and will also put the jar file and other files in your local repository.
 
-## Running the Game
+#### Running After Build
 
-Once the project is built, you can run the maze game using the following Maven command after building:
+Once the project is built, you can run the game using the following Maven command:
 
-``` bash
+```bash
 mvn clean javafx:run
 ```
 
-This will start the game, and you will be able to interact with it.
+You can also run the generated jar directly:
 
-
-You can also run the game from the executable jar file by opening the directory of the jar file in terminal and using the following command:
-
-``` bash
-java -jar Game-1.0-SNAPSHOT.jar
+```bash
+java -jar target/Game-1.0-SNAPSHOT.jar
 ```
 
 
